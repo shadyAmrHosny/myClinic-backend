@@ -11,7 +11,7 @@ const appointmentsRouter=require('./routes/appointmentRoutes')
 
 const application=express();
 application.use(cors());
-application.use(express.json({ limit: '100kb' }));
+application.use(express.json());
 
 // Development logging
 
