@@ -8,9 +8,7 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN mkdir -p /.npm
-
-RUN chown -R 1013690000:0 /.npm
+RUN mkdir -p /.npm/_cacache && chown -R 1013690000:0 /.npm
 
 COPY ./ ./
 
