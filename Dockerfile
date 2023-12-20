@@ -1,4 +1,4 @@
-FROM  node:18-alpine
+FROM  node:alpine
 LABEL author="shady"
 WORKDIR /app
 COPY package.json ./
