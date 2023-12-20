@@ -3,18 +3,14 @@ FROM node:alpine
 LABEL author="shady"
 WORKDIR /app
 
-RUN mkdir -p /.npm
-
-RUN chown -R 1001:0 /.npm
-
 COPY package*.json ./
 
 RUN npm install
+RUN if [ ! -d "/.npm" ]; then mkdir /.npm; fi
 
+RUN chown -R 1013690000:0 /.npm
+
+USER 1013690000
 COPY ./ ./
-
-USER 1001
-
-EXPOSE 3000
 
 CMD ["npm", "start"]
