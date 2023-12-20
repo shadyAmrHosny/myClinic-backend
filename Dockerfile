@@ -6,8 +6,11 @@ LABEL author="shady"
 # Set the working directory in the container
 WORKDIR /app
 
-# Create and set ownership for the .npm directory
-RUN mkdir -p /.npm/_cacache && chown -R 1013690000:0 /.npm
+# Create and set ownership for the /npm directory
+RUN mkdir -p /npm && chown -R 1000:1000 /npm
+
+# Create and set ownership for the ~/.npm directory
+RUN mkdir -p /home/node/.npm && chown -R 1000:1000 /home/node/.npm
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -19,7 +22,7 @@ RUN npm install
 COPY . .
 
 # Set the user
-USER 1013690000
+USER 1000
 
 # Expose the port the app runs on
 EXPOSE 3000
