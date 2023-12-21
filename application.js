@@ -18,6 +18,10 @@ application.use(express.json());
 if (process.env.NODE_ENV==='development') {
     application.use(morgan('dev'))
 }
+application.use((req, res, next) => {
+  console.log('Request Body:', req.body);
+  next();
+});
 
 //
 application.use('/api/v1/users',userRouter);
