@@ -12,7 +12,7 @@ const appointmentsRouter=require('./routes/appointmentRoutes')
 const application=express();
 application.use(cors());
 application.use(express.json());
-
+application.use(express.urlencoded({ extended: true }));
 // Development logging
 
 if (process.env.NODE_ENV==='development') {
