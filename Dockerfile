@@ -3,8 +3,10 @@ LABEL author="shady"
 WORKDIR /app
 COPY package.json ./
 RUN npm install
-COPY ./ ./
-RUN mkdir cache && npm install -g npm@10.2.5 && npm config set cache ./cache --global && npm ci
-RUN chown -R node /app && chmod -R 777 /app && chmod -R o+t /app 
+
+RUN if [ ! -d "/.npm" ]; then mkdir /.npm; fi
+RUN chown -R 1008230000:0 /.npm
+USER 1008230000
+COPY . .
 
 CMD ["npm", "start"]
