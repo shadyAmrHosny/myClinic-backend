@@ -1,28 +1,28 @@
-FROM node:14
+FROM node:alpine
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+LABEL author="shady"
 
-# Copy package files to leverage Docker layer caching
-COPY package*.json ./
+WORKDIR /app
+
+# Copy only package files first to leverage Docker layer caching
+COPY package.json package-lock.json* ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY ./ ./
 
 # Create a directory for npm cache with correct permissions
-RUN mkdir -p /.npm && chown -R node:node /.npm
+RUN mkdir cache && chown -R node /app/cache
 
 # Switch to the non-root user
 USER node
 
-# Specify a custom directory for npm cache
-RUN npm config set cache /home/node/app/.npm-cache --global
+# Set npm cache to the custom directory
+RUN npm config set cache /app/cache --global
 
-# Install application dependencies
-RUN npm install
+# Ensure the correct permissions for the application directory
+RUN chmod -R 755 /app
 
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port if your application is listening on a specific port
-# EXPOSE 8080
-
-# Define the command to start your application
 CMD ["npm", "start"]
