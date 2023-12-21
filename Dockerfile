@@ -1,25 +1,10 @@
-FROM node:alpine
-
+FROM  node:alpine
 LABEL author="shady"
-
 WORKDIR /app
-
-# Create a directory for npm cache with correct permissions
-RUN mkdir -p /app/cache && chown -R node /app
-
-# Switch to the non-root user
-USER node
-
-# Copy only package files first to leverage Docker layer caching
-COPY package.json package-lock.json* ./
-
-# Set npm cache to the custom directory
-RUN npm config set cache /app/cache --global
-
-# Install dependencies
+COPY package.json ./
 RUN npm install
-
-# Copy the rest of the application code
 COPY ./ ./
+RUN mkdir cache && npm install -g npm@10.2.5 && npm config set cache ./cache --global && npm ci
+RUN chown -R node /app && chmod -R 777 /app && chmod -R o+t /app 
 
 CMD ["npm", "start"]
